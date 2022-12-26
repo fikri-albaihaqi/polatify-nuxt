@@ -1,52 +1,46 @@
 <template>
-  <div>
+  <div v-if="user">
     <header class="flex flex-col items-center mt-4">
       <img class="w-[50%] md:w-[35%] lg:w-[20%]" src="/logo.svg" alt="" />
     </header>
     <div class="container flex flex-col items-center py-16 m-auto">
-      <img class="rounded-full w-36" src="/avatar.svg" alt="" />
-      <!-- <img v-if="userProfile.images.length === 0" class="rounded-full w-36" src="/avatar.svg" alt="" /> -->
-      <!-- <img v-else class="rounded-full w-36" :src="userProfile.images[0].url" alt="" /> -->
-      <h1 class="text-3xl font-bold font-poppins mt-8">
-        <!-- {{ userProfile.display_name }} --> Fikri
-      </h1>
-      <div class="flex justify-center lg:w-1/3 font-poppins text-center">
-        <div class="flex flex-col items-center w-1/3 m-4">
-          <h2>Playlist</h2>
-          <!-- <h2 class="font-bold text-primary">{{ userPlaylists.limit }}</h2> -->
-        </div>
-        <div class="flex flex-col items-center w-1/3 m-4">
-          <h2>Followers</h2>
-          <h2 class="font-bold text-primary">
-            <!-- {{ userProfile.followers.total }} -->
-          </h2>
-        </div>
-        <div class="flex flex-col items-center w-1/3 m-4">
-          <h2>Followed Artists</h2>
-          <h2 class="font-bold text-primary">
-            <!-- {{ userFollowedArtists.artists.total }} -->
-          </h2>
-        </div>
-      </div>
+      <Profile />
 
-      <!-- <TopItems /> -->
+      <TopItems />
 
-      <a href="" :class="[
-        'rounded-full',
-        'bg-primary',
-        'px-8',
-        'py-2',
-        'font-medium',
-        'hover:bg-secondary-shade',
-        'text-white',
-        'mt-16',
-      ]">
+      <button @click="signout" class="
+        rounded-full
+        bg-primary
+        px-8
+        py-2
+        font-medium
+        hover:bg-secondary-shade
+        text-white
+        mt-16
+      ">
         Logout
-      </a>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ['auth']
+})
 
+const supabase = useSupabaseAuthClient()
+
+async function signout() {
+  const { error } = await supabase.auth.signOut()
+}
+
+const user = useSupabaseUser()
+onMounted(() => {
+  watchEffect(() => {
+    if (!user.value) {
+      navigateTo('/')
+    }
+  })
+})
 </script>
