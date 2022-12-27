@@ -18,67 +18,67 @@
         </button>
 
         <button @click="(data.type = 'track', data.range = 'medium_term')" :class="[
-          'rounded-full',
-          'px-2',
-          'py-2',
-          'font-medium',
-          'hover:bg-secondary-shade',
-          'mx-2',
-          data.range === 'medium_term' && data.type === 'track'
-            ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
-            : 'bg-secondary',
-        ]">Last 6 Months</button>
+  'rounded-full',
+  'px-2',
+  'py-2',
+  'font-medium',
+  'hover:bg-secondary-shade',
+  'mx-2',
+  data.range === 'medium_term' && data.type === 'track'
+    ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
+    : 'bg-secondary',
+]">Last 6 Months</button>
 
         <button @click="(data.type = 'track', data.range = 'long_term')" :class="[
-          'rounded-full',
-          'px-2',
-          'py-2',
-          'font-medium',
-          'hover:bg-secondary-shade',
-          'mx-2',
-          data.range === 'long_term' && data.type === 'track'
-            ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
-            : 'bg-secondary',
-        ]">All Time</button>
+  'rounded-full',
+  'px-2',
+  'py-2',
+  'font-medium',
+  'hover:bg-secondary-shade',
+  'mx-2',
+  data.range === 'long_term' && data.type === 'track'
+    ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
+    : 'bg-secondary',
+]">All Time</button>
       </div>
 
       <h2 class="text-center mt-6 mb-2 font-bold">Top Artists</h2>
       <div class="grid grid-cols-3 text-sm mb-8">
         <button @click="(data.type = 'artist', data.range = 'short_term')" :class="[
-          'rounded-full',
-          'px-2',
-          'py-2',
-          'font-medium',
-          'hover:bg-secondary-shade',
-          'mx-2',
-          data.range === 'short_term' && data.type === 'artist'
-            ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
-            : 'bg-secondary',
-        ]">Last Month</button>
+  'rounded-full',
+  'px-2',
+  'py-2',
+  'font-medium',
+  'hover:bg-secondary-shade',
+  'mx-2',
+  data.range === 'short_term' && data.type === 'artist'
+    ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
+    : 'bg-secondary',
+]">Last Month</button>
 
         <button @click="(data.type = 'artist', data.range = 'medium_term')" :class="[
-          'rounded-full',
-          'px-2',
-          'py-2',
-          'font-medium',
-          'hover:bg-secondary-shade',
-          'mx-2',
-          data.range === 'medium_term' && data.type === 'artist'
-            ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
-            : 'bg-secondary',
-        ]">Last 6 Months</button>
+  'rounded-full',
+  'px-2',
+  'py-2',
+  'font-medium',
+  'hover:bg-secondary-shade',
+  'mx-2',
+  data.range === 'medium_term' && data.type === 'artist'
+    ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
+    : 'bg-secondary',
+]">Last 6 Months</button>
 
         <button @click="(data.type = 'artist', data.range = 'long_term')" :class="[
-          'rounded-full',
-          'px-2',
-          'py-2',
-          'font-medium',
-          'hover:bg-secondary-shade',
-          'mx-2',
-          data.range === 'long_term' && data.type === 'artist'
-            ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
-            : 'bg-secondary',
-        ]">All Time</button>
+  'rounded-full',
+  'px-2',
+  'py-2',
+  'font-medium',
+  'hover:bg-secondary-shade',
+  'mx-2',
+  data.range === 'long_term' && data.type === 'artist'
+    ? ['bg-primary', 'text-white', 'hover:bg-primary-shade']
+    : 'bg-secondary',
+]">All Time</button>
       </div>
     </div>
 
@@ -143,30 +143,31 @@
         All Time Top Artists
       </h1>
 
-      <!-- <Loader v-if="data.userTopItems.length === 0" /> -->
+      <Loader v-if="data.userTopItems?.length === 0" />
 
       <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5">
         <Polaroid v-for="item in data.userTopItems?.items" :item="item" :type="data.type" />
-        <!-- {{ data.userTopItems.items[7] }} -->
       </div>
     </div>
 
     <div class="flex justify-center">
-      <button @click="exportAsImage('polaroid')" :class="[
-        'rounded-full',
-        'bg-secondary',
-        'px-8',
-        'py-2',
-        'font-medium',
-        'hover:bg-secondary-shade',
-        'text-white',
-        'mt-16',
-      ]">Download Image</button>
+      <button @click="downloadImage('polaroid')" :class="[
+  'rounded-full',
+  'bg-secondary',
+  'px-8',
+  'py-2',
+  'font-medium',
+  'hover:bg-secondary-shade',
+  'text-white',
+  'mt-16',
+]">Download Image</button>
     </div>
   </div>
 </template>
 
 <script setup>
+import html2canvas from 'html2canvas';
+
 const data = reactive({
   userTopItems: [],
   type: 'track',
@@ -175,8 +176,33 @@ const data = reactive({
   artistUri: 'https://api.spotify.com/v1/me/top/artists?limit=10&time_range='
 })
 
-function exportAsImage(imageName) {
-  downloadImage(imageName)
+const downloadImage = (fileName) => {
+  const offScreen = document.querySelector('.polaroid');
+  const clone = hiddenClone(offScreen);
+  html2canvas(clone, { scrollY: -window.scrollY, useCORS: true }).then((canvas) => {
+    const dataURL = canvas.toDataURL('image/png', 1.0);
+    document.body.removeChild(clone);
+    const link = document.createElement('a');
+    console.log(dataURL);
+    link.href = dataURL;
+    link.download = `${fileName}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+}
+
+function hiddenClone(element) {
+  const clone = element.cloneNode(true);
+  const style = clone.style;
+  style.display = 'flex';
+  style.flexDirection = 'column';
+  style.alignItems = 'center';
+  style.backgroundImage = 'linear-gradient(to right top, #fffdf4, #e3f2dc, #b6e8d5, #81dde2, #5bccf6)';
+  style.width = '1280px';
+
+  document.body.appendChild(clone);
+  return clone;
 }
 
 const headers = await useHeaders()
