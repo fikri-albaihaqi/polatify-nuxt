@@ -1,29 +1,29 @@
 <template>
-  <div class="container flex flex-col items-center py-16 m-auto">
-    <img v-if="!profile?.images" class="rounded-full w-36" src="/avatar.svg" alt="" />
-    <img v-else class="rounded-full w-36" :src="profile?.images[0].url" alt="" />
+  <section class="container flex flex-col items-center py-16 m-auto">
+    <img v-if="!profile?.images" class="rounded-full w-36" src="/avatar.svg" alt="Profile image" />
+    <img v-else class="rounded-full w-36" :src="profile?.images[0].url" alt="Profile image" />
     <h1 class="text-3xl font-bold font-poppins mt-8">
       {{ profile?.display_name }}
     </h1>
     <div class="flex justify-center lg:w-1/3 font-poppins text-center">
-      <div class="flex flex-col items-center w-1/3 m-4">
+      <div class="flex flex-col items-center justify-around w-1/3 m-4">
         <h2>Playlist</h2>
         <h2 class="font-bold text-primary">{{ playlist?.total }}</h2>
       </div>
-      <div class="flex flex-col items-center w-1/3 m-4">
+      <div class="flex flex-col items-center justify-around w-1/3 m-4">
         <h2>Followers</h2>
         <h2 class="font-bold text-primary">
           {{ profile?.followers.total }}
         </h2>
       </div>
-      <div class="flex flex-col items-center w-1/3 m-4">
+      <div class="flex flex-col items-center justify-around w-1/3 m-4">
         <h2>Followed Artists</h2>
         <h2 class="font-bold text-primary">
           {{ followed?.artists.total }}
         </h2>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>

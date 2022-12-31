@@ -3,12 +3,12 @@
     <header class="flex flex-col items-center mt-4">
       <img class="w-[50%] md:w-[35%] lg:w-[20%]" src="/logo.svg" alt="" />
     </header>
-    <div class="container flex flex-col items-center py-16 m-auto">
+    <section class="container flex flex-col items-center py-16 m-auto">
       <Profile />
 
       <TopItems />
 
-      <button @click="signout" class="
+      <NuxtLink to="/" @click="signout" class="
         rounded-full
         bg-primary
         px-8
@@ -17,10 +17,11 @@
         hover:bg-secondary-shade
         text-white
         mt-16
+        cursor-pointer
       ">
         Logout
-      </button>
-    </div>
+    </NuxtLink>
+  </section>
   </div>
 </template>
 
@@ -31,11 +32,14 @@ definePageMeta({
 
 const supabase = useSupabaseAuthClient()
 
+
 async function signout() {
   const { error } = await supabase.auth.signOut()
 }
 
 const user = useSupabaseUser()
+const { data: { session }, } = await supabase.auth.getSession()
+
 onMounted(() => {
   watchEffect(() => {
     if (!user.value) {
@@ -43,4 +47,8 @@ onMounted(() => {
     }
   })
 })
+
+if (!session?.provider_token) {
+  signout()
+}
 </script>

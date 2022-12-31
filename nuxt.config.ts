@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Polatify',
+      meta: [
+        { name: 'description', content: 'Polatify is a web app for visualizing user top track & artist in polaroid photo style by using data that retrieved from the Spotify API' }
+      ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

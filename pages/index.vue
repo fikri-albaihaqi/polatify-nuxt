@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center justify-center font-poppins h-screen">
     <img class="w-3/4 lg:w-1/3" src="/logo.svg" alt="" />
     <h1 class="mb-4 text-center md:text-xl">Top track & artist generator in polaroid photo style</h1>
-    <button @click="signInWithSpotify" class="
+    <NuxtLink to="/home" @click="signInWithSpotify" class="
       rounded-full
       py-2
       px-8
@@ -11,9 +11,10 @@
       font-semibold
       hover:bg-secondary-shade
       text-dark
+      cursor-pointer
     ">
       Log In To Spotify
-    </button>
+  </NuxtLink>
   </div>
 </template>
 

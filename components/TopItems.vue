@@ -1,6 +1,6 @@
 <template>
-  <div class="font-poppins">
-    <div class="w-[95vw] md:w-[70vw] m-auto mt-16">
+  <section class="font-poppins">
+    <section class="w-[95vw] md:w-[70vw] m-auto mt-16">
       <h2 class="text-center font-bold">Top Tracks</h2>
       <div class="grid grid-cols-3 my-2 text-sm">
         <button @click="(data.type = 'track', data.range = 'short_term')" :class="[
@@ -80,9 +80,9 @@
     : 'bg-secondary',
 ]">All Time</button>
       </div>
-    </div>
+    </section>
 
-    <div class="polaroid mb-8 mt-16">
+    <section class="polaroid mb-8 mt-16">
       <h1 class="
           text-center text-primary
           font-righteous font-bold
@@ -148,7 +148,7 @@
       <div class="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5">
         <Polaroid v-for="item in data.userTopItems?.items" :item="item" :type="data.type" />
       </div>
-    </div>
+    </section>
 
     <div class="flex justify-center">
       <button @click="downloadImage('polaroid')" :class="[
@@ -162,7 +162,7 @@
   'mt-16',
 ]">Download Image</button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
@@ -183,7 +183,6 @@ const downloadImage = (fileName) => {
     const dataURL = canvas.toDataURL('image/png', 1.0);
     document.body.removeChild(clone);
     const link = document.createElement('a');
-    console.log(dataURL);
     link.href = dataURL;
     link.download = `${fileName}.png`;
     document.body.appendChild(link);
